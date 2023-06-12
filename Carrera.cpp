@@ -6,8 +6,18 @@ struct mazo{
 	char palo[10];
 };
 
+struct datos{
+	char nom_apel[100];
+	char palo[10];
+	int apuesta;
+} jugador;
+
 void crear_mazo(struct mazo *cartas){
 	return;
+}
+
+void ingresar_jugadores(datos *jugador, FILE *apuestas){
+	
 }
 
 void llenar_matriz(char carrera[5][21]){
@@ -28,8 +38,8 @@ void imprimir_carrera(char carrera[5][21]){
 	}
 }
 int main(void){
-	FILE *texto;
-	fopen("apuestas.txt", "w");
+	FILE *apuestas;
+	fopen("apuestas.txt", "w+");
 	mazo *cartas = new mazo[48];
 	char carrera[5][21];
 	llenar_matriz(carrera);
