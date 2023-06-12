@@ -1,10 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-
-struct mazo{
-	int numero_carta;
-	char palo[10];
-};
+#include<time.h>
 
 struct datos{
 	char nom_apel[100];
@@ -12,12 +8,7 @@ struct datos{
 	int apuesta;
 } jugador;
 
-void crear_mazo(struct mazo *cartas){
-	return;
-}
-
-void ingresar_jugadores(datos *jugador, FILE *apuestas){
-	
+void ingresar_jugadores(struct datos *jugador, FILE *apuestas){
 }
 
 void llenar_matriz(char carrera[5][21]){
@@ -29,7 +20,21 @@ void llenar_matriz(char carrera[5][21]){
 	}
 }
 
-void imprimir_carrera(char carrera[5][21]){
+void juego(char carrera[5][21]){
+	srand(time(NULL));
+	int ce = 0, co = 0, cb = 0, cc = 0;
+	char palo;
+	while(1){
+		int r = (rand() %50);
+		if(r <= 12 && r > 0) palo = 'e';
+		else if (r <= 24 && r > 12) palo = 'o';
+		else if (r <= 36 && r > 24) palo = 'b';
+		else if (r <= 48 && r > 36) palo = 'c';
+		else if(r > 48) palo = 'C'; 
+	}
+}
+
+void imprimir_matriz(char carrera[5][21], int ce, int co, int cb, int cc){
 	for(int i = 0; i < 5; i++){
 		for(int j = 0; j < 21; j++){
 			printf("%c", carrera[i][j]);
@@ -37,11 +42,11 @@ void imprimir_carrera(char carrera[5][21]){
 		printf("\n");
 	}
 }
+
 int main(void){
 	FILE *apuestas;
 	fopen("apuestas.txt", "w+");
-	mazo *cartas = new mazo[48];
 	char carrera[5][21];
 	llenar_matriz(carrera);
-	imprimir_carrera(carrera);
+	juego(carrera);
 }
