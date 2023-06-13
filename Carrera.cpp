@@ -9,6 +9,12 @@ struct datos{
 } jugador;
 
 void ingresar_jugadores(struct datos *jugador, FILE *apuestas){
+printf("Ingrese el nombre del juagador: ");
+fgets(jugador->nom, 100, stdin);
+printf("Ingrese el palo al que apostara el jugador: ");
+fgets(jugador->palo, 10, stdin);
+printf("Ingrese la apuesta del jugador: ");
+scanf("%d", &jugador->apuesta);
 }
 
 void llenar_matriz(char carrera[5][21]){
