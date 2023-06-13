@@ -55,4 +55,24 @@ int main(void){
 	char carrera[5][21];
 	llenar_matriz(carrera);
 	juego(carrera);
+	
+	FILE* jugadores;
+	
+		jugadores=fopen("datos.bin", "wb");
+		if(jugadores==NULL){
+		fprintf(stderr, "\nERROR OPENED FILE\n");
+		exit(1);
+	}
+	struct datos input1={"Joaquin Aramayo", "b", 400};
+	
+	int flag=0;
+	
+	flag=fwrite(&input1, sizeof(struct datos), 1, jugadores);
+	
+	if(flag){
+		printf("CONTENTS OF THE STRUCTURE WRITTEN SUCCESFULLY");
+	} else printf("ERROR WRITING TO FILE");
+	
+	fclose(jugadores);
+	return 0;
 }
