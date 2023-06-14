@@ -16,6 +16,26 @@ printf("Ingrese el palo al que apostara el jugador: ");
 fgets(jugador->palo, 10, stdin);
 printf("Ingrese la apuesta del jugador: ");
 scanf("%d", &jugador->apuesta);
+	
+FILE* jugadores;
+	
+	jugadores=fopen("datos.bin", "w+b");
+	if(jugadores==NULL){
+	fprintf(stderr, "\nERROR OPENED FILE\n");
+	exit(1);
+	}
+	
+	
+	int flag=0;
+	
+	flag = fwrite(&jugadores, sizeof(struct datos), 1, jugadores);
+	
+	if(flag){
+		printf("CONTENTS OF THE STRUCTURE WRITTEN SUCCESFULLY");
+	} else printf("ERROR WRITING TO FILE");
+	
+	fclose(jugadores);
+}
 }
 
 void llenar_matriz(char carrera[5][21]){
@@ -129,23 +149,4 @@ int main(void){
 	llenar_matriz(carrera);
 	juego(carrera);
 	
-	FILE* jugadores;
-	
-		jugadores=fopen("datos.bin", "wb");
-		if(jugadores==NULL){
-		fprintf(stderr, "\nERROR OPENED FILE\n");
-		exit(1);
-	}
-	struct datos input1={"Joaquin Aramayo", "b", 400};
-	
-	int flag=0;
-	
-	flag=fwrite(&input1, sizeof(struct datos), 1, jugadores);
-	
-	if(flag){
-		printf("CONTENTS OF THE STRUCTURE WRITTEN SUCCESFULLY");
-	} else printf("ERROR WRITING TO FILE");
-	
-	fclose(jugadores);
-	return 0;
 }
