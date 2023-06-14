@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<windows.h>
 
 struct datos{
 	char nom_apel[100];
@@ -23,6 +24,15 @@ void llenar_matriz(char carrera[5][21]){
 			if(i == 2 && (j+1) % 5 == 0) carrera[i][j] = '+';
 			else carrera[i][j] = '0';
 		}
+	}
+}
+
+void imprimir_matriz(char carrera[5][21], int ce, int co, int cb, int cc){
+	for(int i = 0; i < 5; i++){
+		for(int j = 0; j < 21; j++){
+			printf("%c", carrera[i][j]);
+		}
+		printf("\n");
 	}
 }
 
@@ -111,15 +121,6 @@ void juego(char carrera[5][21]){
 		Sleep(3000);
 		}
 	}
-
-void imprimir_matriz(char carrera[5][21], int ce, int co, int cb, int cc){
-	for(int i = 0; i < 5; i++){
-		for(int j = 0; j < 21; j++){
-			printf("%c", carrera[i][j]);
-		}
-		printf("\n");
-	}
-}
 
 int main(void){
 	FILE *apuestas;
