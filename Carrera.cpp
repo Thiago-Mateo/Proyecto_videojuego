@@ -9,18 +9,20 @@ struct datos{
 	int apuesta;
 } jugador;
 
-void ingresar_jugadores(struct datos *jugador, FILE *apuestas){
-printf("Ingrese el nombre del juagador: ");
-fgets(jugador->nom, 100, stdin);
+
+
+void ingresar_jugadores(struct datos *jugador){
+printf("Ingrese el nombre del jugador: ");
+fgets(jugador->nom_apel, 100, stdin);
 printf("Ingrese el palo al que apostara el jugador: ");
 fgets(jugador->palo, 10, stdin);
 printf("Ingrese la apuesta del jugador: ");
 scanf("%d", &jugador->apuesta);
 	
-FILE* jugadores;
-	
-	jugadores=fopen("datos.bin", "w+b");
-	if(jugadores==NULL){
+	FILE *apuestas;
+	apuestas = fopen("apuestas.txt", "w+");  
+
+	if(apuestas==NULL){
 	fprintf(stderr, "\nERROR OPENED FILE\n");
 	exit(1);
 	}
@@ -28,15 +30,15 @@ FILE* jugadores;
 	
 	int flag=0;
 	
-	flag = fwrite(&jugadores, sizeof(struct datos), 1, jugadores);
+	flag = fwrite(&apuestas, sizeof(struct datos), 1, apuestas);
 	
 	if(flag){
-		printf("CONTENTS OF THE STRUCTURE WRITTEN SUCCESFULLY");
-	} else printf("ERROR WRITING TO FILE");
+		printf("Se Copio con Exito!\n");
+	} else printf("Error al guardar :( \n");
 	
-	fclose(jugadores);
+	fclose(apuestas);
 }
-}
+
 
 void generar_carta(int *ce,int *co,int *cb,int *cc){
 	srand(time(NULL));
@@ -86,10 +88,16 @@ void llenar_matriz(char carrera[5][21]){
 void imprimir_matriz(char carrera[5][21], int ce, int co, int cb, int cc){
 	for(int i = 0; i < 5; i++){
 		for(int j = 0; j < 21; j++){
-			printf("%c", carrera[i][j]);
+				//Imprime Los Caballos
+			if (ce == j && i == 0)printf("%c", 006); // Caballo de Espada
+			if (co == j && i == 1)printf("%c", 003); // Caballo de Oro
+			if (cb == j && i == 3)printf("%c", 004); // Caballo de Basto
+			if (cc == j && i == 4)printf("%c", 005); // Caballo de Copa
+			else printf("%c", carrera[i][j]);
 		}
 		printf("\n");
 	}
+	
 }
 
 void juego(char carrera[5][21]){
@@ -152,13 +160,29 @@ void juego(char carrera[5][21]){
 		}
 	}
 
+	//Menu del juego
+
+	void menu(struct datos *jugador){
+	 int menu;
+	 while(1){
+	printf("Bienvenido Al juego de Carreras de Caballos\n 1- Empezar a Jugar\n 2- Mostrar Apuestas Anteriores\n 3- Eliminar Apuesta\n");
+	scanf("%d", &menu);
+	switch(menu){
+		//case 1:
+	
+	//ingresar_jugadores(jugadores);
+	}
+	}
+}
+
 int main(void){
-	FILE *apuestas;
-	fopen("apuestas.txt", "w+");
+	/*FILE *apuestas;
+	fopen("apuestas.txt", "w+");*/	
 	char carrera[5][21];
+	datos *jugadores = &jugador;
 	llenar_matriz(carrera);
 	juego(carrera);
-	datos *jugadores = &jugador;
-	ingresar_jugadores(jugadores, apuestas);
-	
+	//menu();
+
+
 }
