@@ -188,28 +188,35 @@ void juego(char carrera[5][21]){
 
 	//Menu del juego
 
-	void menu(struct datos *jugador){
+	void menu(struct datos *jugador, char carrera[5][21]){
 	 int menu;
 	 while(1){
-	printf("Bienvenido Al juego de Carreras de Caballos\n 1- Empezar a Jugar\n 2- Mostrar Apuestas Anteriores\n 3- Eliminar Apuesta\n");
+	printf("Bienvenido Al juego de Carreras de Caballos\n 1- Ingresar Jugadores\n 2- Ver Reglas\n 3- Eliminar Apuesta\n");
 	scanf("%d", &menu);
 	switch(menu){
-		//case 1:
-	
-	//ingresar_jugadores(jugadores);
+		case 1:
+			ingresar_jugadores(jugador);
+			break;
+		case 2:
+			printf("------REGLAS-------\n");
+			printf("1) Siempre hay cuatro caballos en juego, 1 de cada palo.\n 2) Para que un caballo avance, tiene que salir el palo de ese caballo(por ejemplo, si al voltear la carta sale basto, avanza el caballo de basto)\n 3) Gana el caballo que logre avanzar 21 lugares.\n 4)Cada 5 pasos, cuando todos los caballos hayan pasado ese punto se voltea una carta. El caballo que sea del palo que salio retrocede un lugar.\n 5) Si sale un comodin, la proxima carta a la que le toque avanzar subira dos casillas en vez de una.\n");
+			printf("\n");
+		case 3:
+			
 	}
+	
 	}
 }
 
 int main(void){
-	//Pone una semilla con raÃƒÂ­z time, asegurando que el numero generado siempre sea aleatorio.
+	//Pone una semilla con raÃƒÆ’Ã‚Â­z time, asegurando que el numero generado siempre sea aleatorio.
 	srand(time(NULL));
 	/*FILE *apuestas;
 	fopen("apuestas.txt", "w+");*/	
 	char carrera[5][21];
-	datos *jugadores = &jugador;
+	//datos *jugadores = &jugador;
 	llenar_matriz(carrera);
-	juego(carrera);
-	//menu();
+	//juego(carrera);
+	menu(&jugador, carrera);
 
 }
