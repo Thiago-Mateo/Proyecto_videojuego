@@ -216,19 +216,19 @@ void juego(char carrera[5][21]){
 		imprimir_matriz(carrera, ce, co, cb, cc);
 		//Si alguno de los caballos llega al final de la matriz(Matriz de 21 lugares) gana.
 		if(ce == 20){
-			printf("Gana el caballo de espada!");
+			printf("Gana el caballo de espada!\n");
 			return;
 		}
 		else if(co == 20){
-			printf("Gana el caballo de oro!");
+			printf("Gana el caballo de oro!\n");
 			return;
 		}
 		else if(cb == 20){
-			printf("Gana el caballo de basto!");
+			printf("Gana el caballo de basto!\n");
 			return;
 		}
 		else if(cc == 20){
-			printf("Gana el caballo de copa!");
+			printf("Gana el caballo de copa!\n");
 			return;
 		}
 		verificar_puntos(&ce, &co, &cb, &cc, &ver, ce1, ce2, ce3, ce4, co1, co2, co3, co4, cb1, cb2, cb3, cb4, cc1, cc2, cc3, cc4);
@@ -254,12 +254,15 @@ void juego(char carrera[5][21]){
 		printf("\n");
 		switch(menu){
 			case 1:
+				system("cls");
 				ingresar_jugadores(jugador);
 				break;
 			case 2:
+				system("cls");
 				juego(carrera);
 				break;
 			case 3:
+				system("cls");
 				printf("------REGLAS-------\n");
 				printf("1) Siempre hay cuatro caballos en juego, 1 de cada palo.\n 2) Para que un caballo avance, tiene que salir el palo de ese caballo(por ejemplo, si al voltear la carta sale basto, avanza el caballo de basto)\n 3) Gana el caballo que logre avanzar 21 lugares.\n 4)Cada 5 pasos, cuando todos los caballos hayan pasado ese punto se voltea una carta. El caballo que sea del palo que salio retrocede un lugar.\n 5) Si sale un comodin, la proxima carta a la que le toque avanzar subira dos casillas en vez de una.\n");
 				printf("\n");
