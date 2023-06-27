@@ -71,25 +71,25 @@ void generar_carta(int *ce,int *co,int *cb,int *cc, int *c_count){
 	int r = (rand() %5);
 	switch(r){
 		case 0:
-			printf("Salio... Espada!\n");
+			{system("color B");printf("Salio... Espada!\n");}
 			if(comodin == 1) *ce += 2;
 			else *ce +=1;	
 			comodin = 0;
 			break;
 		case 1:
-			printf("Salio... Oro!\n");
+			{system("color 6");printf("Salio... Oro!\n");}
 			if(comodin == 1) *co += 2;
 			else *co += 1;
 			comodin = 0;
 			break;
 		case 2:
-			printf("Salio... Basto!\n");
+			{system("color 2");printf("Salio... Basto!\n");}
 			if(comodin == 1) *cb += 2;
 			else *cb += 1;
 			comodin = 0;
 			break;
 		case 3:
-			printf("Salio... Copa!\n");
+			{system("color 4");printf("Salio... Copa!\n");}
 			if(comodin == 1) *cc += 2;
 			else *cc += 1;
 			comodin = 0;
@@ -149,6 +149,7 @@ void verificar_puntos(int *ce, int *co, int *cb, int *cc, int *ver, int ce1, int
 	if(ce1 >= 1 && co1 >= 1 && cb1 >= 1 && cc1 >= 1 && verificacion < 1){
 		printf("Ya todos los caballos pasaron la marca de la 5ta linea\nSe dara vuelta una carta, y el palo que salga retrocede un lugar\n");
 		printf("Presione enter para seguir\n");
+		while( getchar() != '\n' );
 		while( getchar() != '\n' );
 		generar_carta_linea(ce, co, cb, cc);
 		*ver += 1;
@@ -216,19 +217,19 @@ void juego(char carrera[5][21]){
 		imprimir_matriz(carrera, ce, co, cb, cc);
 		//Si alguno de los caballos llega al final de la matriz(Matriz de 21 lugares) gana.
 		if(ce == 20){
-			printf("Gana el caballo de espada!\n");
+			{system("color 7");printf("Gana el caballo de espada!\n");}
 			return;
 		}
 		else if(co == 20){
-			printf("Gana el caballo de oro!\n");
+			{system("color 7");printf("Gana el caballo de oro!\n");}
 			return;
 		}
 		else if(cb == 20){
-			printf("Gana el caballo de basto!\n");
+			{system("color 7");printf("Gana el caballo de basto!\n");}
 			return;
 		}
 		else if(cc == 20){
-			printf("Gana el caballo de copa!\n");
+			{system("color 7");printf("Gana el caballo de copa!\n");}
 			return;
 		}
 		verificar_puntos(&ce, &co, &cb, &cc, &ver, ce1, ce2, ce3, ce4, co1, co2, co3, co4, cb1, cb2, cb3, cb4, cc1, cc2, cc3, cc4);
