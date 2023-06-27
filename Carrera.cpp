@@ -3,6 +3,8 @@
 #include<time.h>
 #include<windows.h>
 
+char pap[10];
+
 struct datos{
 	char nom_apel[100];
 	char palo[10];
@@ -10,6 +12,7 @@ struct datos{
 } jugador;
 
 void ingresar_jugadores(struct datos *jugador){
+fgets(pap, 100, stdin);
 printf("Ingrese el nombre del jugador: ");
 fgets(jugador->nom_apel, 100, stdin);
 printf("Ingrese el palo al que apostara el jugador: ");
@@ -240,25 +243,37 @@ void juego(char carrera[5][21]){
 	void menu(struct datos *jugador, char carrera[5][21]){
 	 int menu;
 	 while(1){
-	printf("Bienvenido Al juego de Carreras de Caballos\n 1- Ingresar Jugadores\n 2- Ver Reglas\n 3- Eliminar Apuesta\n");
-	scanf("%d", &menu);
-	switch(menu){
-		case 1:
-			ingresar_jugadores(jugador);
-			break;
-		case 2:
-			printf("------REGLAS-------\n");
-			printf("1) Siempre hay cuatro caballos en juego, 1 de cada palo.\n 2) Para que un caballo avance, tiene que salir el palo de ese caballo(por ejemplo, si al voltear la carta sale basto, avanza el caballo de basto)\n 3) Gana el caballo que logre avanzar 21 lugares.\n 4)Cada 5 pasos, cuando todos los caballos hayan pasado ese punto se voltea una carta. El caballo que sea del palo que salio retrocede un lugar.\n 5) Si sale un comodin, la proxima carta a la que le toque avanzar subira dos casillas en vez de una.\n");
-			printf("\n");
-		case 3:
-			
-	}
+	 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 201, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
+	 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
+	 	printf("%c%c%c%c%c%c%c%c%c%c%c%c\n", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 187);
+		printf("%cBienvenido Al juego de Carreras de Caballos\t   %c\n%c1- Ingresar Jugadores\t\t\t\t   %c\n%c2- Empezar Juego\t\t\t\t   %c\n%c3- Ver Reglas\t\t\t\t\t   %c\n%c4- Salir del programa\t\t\t\t   %c\n", 186, 186, 186, 186, 186, 186, 186, 186, 186, 186);
+		printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 200, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
+	 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
+	 	printf("%c%c%c%c%c%c%c%c%c%c%c\n", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 188);
+		scanf("%d", &menu);
+		printf("\n");
+		switch(menu){
+			case 1:
+				ingresar_jugadores(jugador);
+				break;
+			case 2:
+				juego(carrera);
+				break;
+			case 3:
+				printf("------REGLAS-------\n");
+				printf("1) Siempre hay cuatro caballos en juego, 1 de cada palo.\n 2) Para que un caballo avance, tiene que salir el palo de ese caballo(por ejemplo, si al voltear la carta sale basto, avanza el caballo de basto)\n 3) Gana el caballo que logre avanzar 21 lugares.\n 4)Cada 5 pasos, cuando todos los caballos hayan pasado ese punto se voltea una carta. El caballo que sea del palo que salio retrocede un lugar.\n 5) Si sale un comodin, la proxima carta a la que le toque avanzar subira dos casillas en vez de una.\n");
+				printf("\n");
+				break;
+			case 4:
+				return;
+				break;
+		}
 	
 	}
 }
 
 int main(void){
-	//Pone una semilla con raÃƒÆ’Ã‚Â­z time, asegurando que el numero generado siempre sea aleatorio.
+	//Pone una semilla con raÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­z time, asegurando que el numero generado siempre sea aleatorio.
 	srand(time(NULL));
 	/*FILE *apuestas;
 	fopen("apuestas.txt", "w+");*/	
