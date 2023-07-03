@@ -3,45 +3,31 @@
 #include<time.h>
 #include<windows.h>
 
+//pap lo declaramos para hacer un fgets() que evita un error de salto.
 char pap[10];
+//players es un contador de los jugadores ya anotados.
+int players = 0;
+//pozo es la cantidad total de dinero apostado todo sumado.
+int pozo = 0;
 
 struct datos{
 	char nom_apel[100];
 	char palo[10];
 	int apuesta;
-} jugador;
+} jugador[100];
 
 void ingresar_jugadores(struct datos *jugador){
-	//Pide al usuario que ingrese a los jugadores y guarda la información en la estructura
+	//Pide al usuario que ingrese a los jugadores y guarda la informacion en la estructura
 	fgets(pap, 100, stdin);
 	printf("Ingrese el nombre del jugador: ");
-	fgets(jugador->nom_apel, 100, stdin);
+	fgets(jugador[players].nom_apel, 100, stdin);
 	printf("Ingrese el palo al que apostara el jugador: ");
-	fgets(jugador->palo, 10, stdin);
+	fgets(jugador[players].palo, 10, stdin);
 	printf("Ingrese la apuesta del jugador: ");
-	scanf("%d", &jugador->apuesta);
+	scanf("%d", &jugador[players].apuesta);
+	pozo += jugador[players].apuesta;
+	players += 1;
 	
-	//Abre el archivo de texto
-	FILE *apuestas;
-	apuestas = fopen("apuestas.txt", "w+");  
-
-	//Si no logra abrir el archivo o este no existe tira error
-	if(apuestas==NULL){
-	fprintf(stderr, "\nERROR OPENED FILE\n");
-	exit(1);
-	}
-	
-	int flag=0;
-	
-	//Pasa los contenidos de la estructura al archivo de texto
-	flag = fwrite(&apuestas, sizeof(struct datos), 1, apuestas);
-	
-	if(flag){
-		printf("Se Copio con Exito!\n");
-	} else printf("Error al guardar :( \n");
-	
-	//Cierra el archivo de texto
-	fclose(apuestas);
 }
 
 void generar_carta_linea(int *ce,int *co,int *cb,int *cc){
@@ -83,28 +69,31 @@ void generar_carta(int *ce,int *co,int *cb,int *cc, int *c_count){
 	switch(r){
 		case 0:
 			//Color B pone la consola en azul.
-			{system("color B");printf("Salio... Espada!\n");}
+			{system("color B");printf("Salio... Espada!\t\tPozo: %d\n", pozo);}
+			//Se fija si el comodin salio anteriormente
+			//En caso de que si, el caballo avanza dos espacios
+			//Si no avanza solo uno.
 			if(comodin == 1) *ce += 2;
 			else *ce +=1;	
 			comodin = 0;
 			break;
 		case 1:
-			//Color B pone la consola en amarillo.
-			{system("color 6");printf("Salio... Oro!\n");}
+			//Color 6 pone la consola en amarillo.
+			{system("color 6");printf("Salio... Oro!\t\t\tPozo: %d\n", pozo);}
 			if(comodin == 1) *co += 2;
 			else *co += 1;
 			comodin = 0;
 			break;
 		case 2:
-			//Color B pone la consola en verde.
-			{system("color 2");printf("Salio... Basto!\n");}
+			//Color 2 pone la consola en verde.
+			{system("color 2");printf("Salio... Basto!\t\t\tPozo: %d\n", pozo);}
 			if(comodin == 1) *cb += 2;
 			else *cb += 1;
 			comodin = 0;
 			break;
 		case 3:
-			//Color B pone la consola en rojo.
-			{system("color 4");printf("Salio... Copa!\n");}
+			//Color 4 pone la consola en rojo.
+			{system("color 4");printf("Salio... Copa!\t\t\tPozo: %d\n", pozo);}
 			if(comodin == 1) *cc += 2;
 			else *cc += 1;
 			comodin = 0;
@@ -224,7 +213,15 @@ void cruzar_linea(int ce, int co, int cb, int cc, int *ce1, int *ce2, int *ce3, 
 	else if(cc >= 19) *cc4 += 1;
 }
 
-void juego(char carrera[5][21]){
+void juego(char carrera[5][21], struct datos *jugador){
+	//Abre el archivo de texto
+	FILE *palos;
+	palos = fopen("ganadores.txt", "w+");  
+	//Si no logra abrir el archivo o este no existe tira error
+	if(palos==NULL){
+	fprintf(stderr, "\nERROR OPENED FILE\n");
+	exit(1);
+	}
 	//Cada variable representa la posicion de cada caballo.
 	int ce = 0, co = 0, cb = 0, cc = 0;
 	//Estas variables chequean si cada caballo paso alguno de las cuatro lineas.
@@ -243,19 +240,25 @@ void juego(char carrera[5][21]){
 		imprimir_matriz(carrera, ce, co, cb, cc);
 		//Si alguno de los caballos llega al final de la matriz(Matriz de 21 lugares) gana.
 		if(ce == 20){
+			//Pone la consola en color blanco
 			{system("color 7");printf("Gana el caballo de espada!\n");}
+			//Guarda en el archivo de texto el palo que gano la carrera.
+			fputs("Espada\n", palos);
 			return;
 		}
 		else if(co == 20){
 			{system("color 7");printf("Gana el caballo de oro!\n");}
+			fputs("Oro\n", palos);
 			return;
 		}
 		else if(cb == 20){
 			{system("color 7");printf("Gana el caballo de basto!\n");}
+			fputs("Basto\n", palos);
 			return;
 		}
 		else if(cc == 20){
 			{system("color 7");printf("Gana el caballo de copa!\n");}
+			fputs("Copa\n", palos);
 			return;
 		}
 		//Esta funcion se fija si ya los caballos pasaron todos algun punto de los previamente nombrados.
@@ -267,8 +270,16 @@ void juego(char carrera[5][21]){
 		}
 	}
 
+	void imprimir_jugadores(struct datos *jugador){
+		printf("Jugadores:\n----------\n");
+		for(int i = 0; i < players; i++){
+			//Imprime el nombre y apellido(si lo puso), el palo a que aposto y la apuesta de cada jugador.
+			printf("%s%s%d\n\n", jugador[i].nom_apel, jugador[i].palo, jugador[i].apuesta);
+		}
+		//Imprime el pozo total acumulado.
+		printf("Pozo: %d\n", pozo);
+	}
 	//Menu del juego
-
 	void menu(struct datos *jugador, char carrera[5][21]){
 	//menu sirve como una forma de elegir las opciones del menu.
 	int menu;
@@ -278,11 +289,12 @@ void juego(char carrera[5][21]){
 	 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
 	 	printf("%c%c%c%c%c%c%c%c%c%c%c%c\n", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 187);
 	 	//Imprime las opciones del menu.
-		printf("%cBienvenido Al juego de Carreras de Caballos\t   %c\n%c1- Ingresar Jugadores\t\t\t\t   %c\n%c2- Empezar Juego\t\t\t\t   %c\n%c3- Ver Reglas\t\t\t\t\t   %c\n%c4- Salir del programa\t\t\t\t   %c\n", 186, 186, 186, 186, 186, 186, 186, 186, 186, 186);
+		printf("%cBienvenido Al juego de Carreras de Caballos\t   %c\n%c1- Ingresar Jugadores\t\t\t\t   %c\n%c2- Empezar Juego\t\t\t\t   %c\n%c3- Ver Reglas\t\t\t\t\t   %c\n%c4- Ver jugadores\t\t\t\t   %c\n%c5- Borrar jugadores\t\t\t\t   %c\n%c6- Salir del programa\t\t\t\t   %c\n", 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186, 186);
 		printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 200, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
 	 	printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205);
 	 	printf("%c%c%c%c%c%c%c%c%c%c%c\n", 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 188);
 	 	//Espera la entrada del usuario.
+	 	scan:
 		scanf("%d", &menu);
 		printf("\n");
 		switch(menu){
@@ -294,7 +306,7 @@ void juego(char carrera[5][21]){
 			case 2:
 				//2 lleva al jugador a la funcion principal donde ocurre el juego.
 				system("cls");
-				juego(carrera);
+				juego(carrera, jugador);
 				break;
 			case 3:
 				//3 Imprime las reglas.
@@ -304,8 +316,30 @@ void juego(char carrera[5][21]){
 				printf("\n");
 				break;
 			case 4:
-				//4 sale del programa.
+				//4 Imprime a todos los jugadores ingresados.
+				system("cls");
+				imprimir_jugadores(jugador);
+				break;
+			case 5:
+				//5 Vacia la lista de jugadores.
+				for(int i = 0; i < players; i++){
+					//Vacia el nombre, palo y apuesta de cada estructura.
+					memset(jugador[i].nom_apel, ' ', 100);
+					memset(jugador[i].palo, ' ', 100);
+					jugador[i].apuesta = 0;
+				}
+				//Vacia el pozo y pone valor 0 al contador de jugadores.
+				pozo = 0;
+				players = 0;
+				system("cls");
+				break;
+			case 6:
+				//6 Termina el programa.
 				return;
+				break;
+			default:
+				//Si el usuario ingresa cualquier otra cosa excepto lo indicado en pantalla no va a ocurrir nada.
+				goto scan;
 				break;
 		}
 	
@@ -315,11 +349,10 @@ void juego(char carrera[5][21]){
 int main(void){
 	//Pone una semilla con raiz time, asegurando que el numero generado siempre sea aleatorio.
 	srand(time(NULL));
-	/*FILE *apuestas;
-	fopen("apuestas.txt", "w+");*/	
+	//Crea la matriz que se va a imprimir con los caballos corriendo.	
 	char carrera[5][21];
 	//datos *jugadores = &jugador;
 	llenar_matriz(carrera);
 	//juego(carrera);
-	menu(&jugador, carrera);
+	menu(jugador, carrera);
 }
